@@ -180,7 +180,8 @@ ga_search_thread(const Cities& cities,
 
   // Evolve the population to make it fitter and keep track of
   // the shortest distance generated
-  for (unsigned long i = 1; i <= iters; ++i) {
+  std::cout<<"iterations is "<<iters/pop_size <<" \n";
+  for (unsigned long i = 1; i <= iters/pop_size; ++i) {
     deme.compute_next_generation();    // generate next generation
 
     // Find best individual in this population
@@ -189,7 +190,7 @@ ga_search_thread(const Cities& cities,
       best_ordering = ordering;
     }
   }
-  std::cout<<"thread ends: tsp ln 192\n";
+  std::cout<<"thread ends: tsp.cc ln 192\n";
   return best_ordering;
 }
 
@@ -219,14 +220,15 @@ ga_search(const Cities& cities,
     }
   };
 
+
   std::vector<std::thread> threads;
   for (unsigned i = 0; i < nthread; ++i) {
     threads.push_back(std::thread(run_one_thread));
-    std::cout<<"after thread added: line 225\n";
+    std::cout<<"after thread added: tsp.cc line 225\n";
   }
 
   for (auto& t : threads) {
-    std::cout<<"before join: ln 230\n";
+    std::cout<<"before join: tsp.cc ln 230\n";
     t.join();
 
   }
