@@ -1,24 +1,29 @@
+/*
+ * Declarations for Deme class to evolve a genetic algorithm for the
+ * travelling-salesperson problem.
+ * TournamentDeme uses tournament selection.
+ */
+
 #pragma once
 
 #include "chromosome.hh"
-#include "climb_chromosome.hh"
 #include "cities.hh"
 #include "deme.hh"
+
 #include <random>
-#include <vector>
 
-class TournamentDeme : public Deme{
-    
-  public:
-    
-    TournamentDeme(const Cities* cities_ptr, unsigned pop_size, double mut_rate) 
-    : Deme(cities_ptr, pop_size, mut_rate){}
+class TournamentDeme : public Deme {
+ public:
+  // Generate a Deme of the specified size with all-random chromosomes.
+  // Also receives a mutation rate in the range [0-1].
+  TournamentDeme(const Cities* cities_ptr, unsigned pop_size, double mut_rate)
+    : Deme(cities_ptr, pop_size, mut_rate)
+  {}
 
-    Chromosome* select_parent() override;
+  virtual ~TournamentDeme() = default;
 
-    Chromosome* tournament_selection();
-
-    std::vector<Chromosome*> winners(std::vector<Chromosome*> parents);
+ protected:
+  // Randomly select a chromosome in the population based on fitness and
+  // return a pointer to that chromosome.
+  virtual Chromosome* select_parent() override;
 };
-
-

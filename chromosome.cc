@@ -40,7 +40,6 @@ Chromosome::mutate()
 std::pair<Chromosome*, Chromosome*>
 Chromosome::recombine(const Chromosome* other)
 {
-  
   assert(is_valid());
   assert(other->is_valid());
 
@@ -75,7 +74,7 @@ Chromosome::create_crossover_child(const Chromosome* p1, const Chromosome* p2,
   // value is within [b,e) and from parent2 otherwise
   unsigned i = 0, j = 0;
 
-  for ( ; i < len; ++i) {
+  for ( ; i < len && j < len; ++i) {
     if (i >= b and i < e) {
       child->order_[i] = p1->order_[i];
     }

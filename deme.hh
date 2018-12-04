@@ -7,9 +7,7 @@
 
 #include "chromosome.hh"
 #include "cities.hh"
-#include "climb_chromosome.hh"
 
-#include "iostream"
 #include <random>
 
 class Deme {
@@ -32,7 +30,6 @@ class Deme {
 
   // Return a pointer to the chromosome with the highest fitness.
   const Chromosome* get_best() const;
-
 
  protected:
   // Randomly select a chromosome in the population based on fitness and
