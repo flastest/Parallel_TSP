@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-Wall -Wextra -pedantic -Werror -std=c++17 -O3
+CXXFLAGS=-Wall -Wextra -pedantic -Werror -std=c++17 -O3 
 LDFLAGS=$(CXXFLAGS)
 OBJ=$(SRC:.cc=.o)
 
@@ -9,7 +9,7 @@ tsp: tsp.o tournament_deme.o climb_chromosome.o chromosome.o deme.o cities.o
 	$(CXX) $(LDFLAGS) -o $@ $^ -pthread
 
 %.o.cc: %.cc %.hh
-	$(CXX) $(CXXFLAGS) $(OPTFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) $(OPTFLAGS) -c -o $@ $< -j 4
 
 clean:
 	rm -rf *.o tsp
