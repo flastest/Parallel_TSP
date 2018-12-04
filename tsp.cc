@@ -15,6 +15,7 @@
 #include <numeric>
 #include <thread>
 #include <mutex>
+#include <future>
 
 //////////////////////////////////////////////////////////////////////////////
 // Check whether a specific ordering reduces the total path distance in cities
@@ -154,8 +155,9 @@ exhaustive_search(const Cities& cities)
 }
 
 
+
 //////////////////////////////////////////////////////////////////////////////
-// ga_search uses a genetic algorithm to solve the traveling salesperson
+// ga_search_thread uses a genetic algorithm to solve the traveling salesperson
 // problem for a given list of cities.
 // This function then creates a randomly generated population of permutations
 // for traveling to those cities.
@@ -163,7 +165,36 @@ exhaustive_search(const Cities& cities)
 // indicates how aggressively the population's individuals mutate.  The
 // function then repeatedly evolves the population to generate increasingly
 // better (i.e. shorter total distances) city permutations.
-// The best cities permutation is returned.
+// The best cities permutation is returned. 
+Cities::permutation_t
+ga_search_thread(const Cities& cities,
+          unsigned iters,
+          unsigned pop_size,
+          double mutation_rate)
+{
+
+  auto best_dist = 1e100; // Eliminate silly warning
+  auto best_ordering = Cities::permutation_t(cities.size());
+
+  TournamentDeme deme(&cities, pop_size, mutation_rate);
+
+  // Evolve the population to make it fitter and keep track of
+  // the shortest distance generated
+  for (unsigned long i = 1; i <= iters; ++i) {
+    deme.compute_next_generation();    // generate next generation
+
+    // Find best individual in this population
+    auto ordering = deme.get_best()->get_ordering();
+    if (is_improved(cities, ordering, best_dist, i * pop_size)) {
+      best_ordering = ordering;
+    }
+  }
+  std::cout<<"thread ends: tsp ln 192\n";
+  return best_ordering;
+}
+
+
+//This manages multiple threads using ga_search
 Cities::permutation_t
 ga_search(const Cities& cities,
           unsigned iters,
@@ -171,24 +202,39 @@ ga_search(const Cities& cities,
           double mutation_rate,
           unsigned nthread = 1)
 {
-  auto best_dist = 1e100 + nthread; // Eliminate silly warning
+
   auto best_ordering = Cities::permutation_t(cities.size());
+  auto best_mutex = std::mutex();
 
-  TournamentDeme deme(&cities, pop_size, mutation_rate);
+  auto run_one_thread = [&]() {
+    auto my_best = ga_search_thread(cities, iters / nthread, pop_size, mutation_rate);
 
-  // Evolve the population to make it fitter and keep track of
-  // the shortest distance generated
-  for (long i = 1; i <= iters/pop_size; ++i) {
-    deme.compute_next_generation();    // generate next generation
 
-    // Find best individual in this population
-    const auto ordering = deme.get_best()->get_ordering();
-    if (is_improved(cities, ordering, best_dist, i * pop_size)) {
-      best_ordering = ordering;
+    if (cities.total_path_distance(my_best) < cities.total_path_distance(best_ordering)) {
+      auto guard = std::lock_guard(best_mutex);
+      // Repeat check, maybe something changed:
+      if (cities.total_path_distance(my_best) < cities.total_path_distance(best_ordering)) {
+        best_ordering = my_best;
+      }
     }
+  };
+
+  std::vector<std::thread> threads;
+  for (unsigned i = 0; i < nthread; ++i) {
+    threads.push_back(std::thread(run_one_thread));
+    std::cout<<"after thread added: line 225\n";
   }
+
+  for (auto& t : threads) {
+    std::cout<<"before join: ln 230\n";
+    t.join();
+
+  }
+
   return best_ordering;
+
 }
+
 
 
 //////////////////////////////////////////////////////////////////////////////
