@@ -11,6 +11,10 @@
 #include <cassert>
 #include <numeric>
 #include <random>
+#include <vector>
+
+#include <atomic>
+#include <thread>
 
 //////////////////////////////////////////////////////////////////////////////
 // Generate a Deme of the specified size with all-random chromosomes.
@@ -40,6 +44,9 @@ Deme::~Deme()
 // Then, the pair is recombined once (using the recombine() method) to generate
 // a new pair of chromosomes, which are stored in the Deme.
 // After we've generated pop_size new chromosomes, we delete all the old ones.
+
+
+
 void Deme::compute_next_generation()
 {
   auto newpop = pop_;

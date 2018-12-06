@@ -28,6 +28,8 @@ class Deme {
   // After we've generated pop_size new chromosomes, we delete all the old ones.
   virtual void compute_next_generation();
 
+  //virtual void compute_next_generation_parallel();
+
   // Return a pointer to the chromosome with the highest fitness.
   const Chromosome* get_best() const;
 
