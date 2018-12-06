@@ -3,6 +3,7 @@ Creating a parallel solution finder to the traveling salesperson problem
 
 
 ## For the solution to the original problem type `make old`
+## And run `./old`
 
 We tested this solution with different numbers of cores.
 
