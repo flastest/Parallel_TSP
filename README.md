@@ -5,8 +5,8 @@ Ariel Flaster and Stella Wroblewski
 Creating a parallel solution finder to the traveling salesperson problem
 
 
-## For the solution to the original problem type `make old`
-## And run `./old`
+## For the solution to the original problem type `make`
+## And run `./tsp`
 
 We tested this solution with different numbers of cores.
 
