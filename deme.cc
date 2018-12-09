@@ -114,7 +114,7 @@ Chromosome* Deme::select_parent()
 
 
 
-
+#if0
 void Deme::compute_next_generation_parallel()
 {
   auto newpop = pop_;
@@ -156,3 +156,4 @@ void Deme::compute_next_generation_parallel()
   }
   std::swap(pop_, newpop);
 }
+#endif
