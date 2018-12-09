@@ -114,7 +114,7 @@ Chromosome* Deme::select_parent()
 
 
 
-#if0
+#if 0
 void Deme::compute_next_generation_parallel()
 {
   auto newpop = pop_;
