@@ -16,3 +16,8 @@ We tested this solution with different numbers of cores.
 | 2      | 50s | 18581.6 |
 | 4 | 1 min 20s | 18887 | 
 | 8 | 50s | 19544 | 
+
+
+As you can see, 2 cores ran twice as fast as 1 core, which shows our parallelization working :)
+
+However, 4 cores takes longer than 2 cores, but 8 is much shorter than 4, and comparable to 2 cores. Odd.
