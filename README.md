@@ -1,4 +1,7 @@
 # Parallel TSP
+
+Ariel Flaster and Stella Wroblewski
+
 Creating a parallel solution finder to the traveling salesperson problem
 
 
