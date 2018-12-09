@@ -8,7 +8,7 @@ Creating a parallel solution finder to the traveling salesperson problem
 ## For the solution to the original problem type `make`
 ## And run `./tsp`
 
-We tested this solution with different numbers of cores.
+We tested this solution with different numbers of cores. We ran with the parameters of a pop size of 6, mutation rate of 0.4 and tested the number of cores variable.
 
 | Cores        | Time           | Result |
 | ------------- |:-------------:|----------:|
